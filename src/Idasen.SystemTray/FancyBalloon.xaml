@@ -6,13 +6,16 @@
              Height="120"
              Width="240">
     <UserControl.Resources>
-        <Color x:Key="ColorDarkYellow">#FFAF8B00</Color>
+        <Color x:Key="ColorDarkGray">#2C2C2C</Color>
+        <Color x:Key="ColorSoftBlue">#007BFF</Color>
+        <Color x:Key="ColorWhite">#FFFFFF</Color>
+        <Color x:Key="ColorLightGray">#ADB5BD</Color>
 
-        <Color x:Key="ColorDarkBlue">#FF0048A3</Color>
-        <Color x:Key="ColorLightBlue">#FF0098F3</Color>
+        <SolidColorBrush x:Key="BrushDarkGray" Color="{StaticResource ColorDarkGray}"/>
+        <SolidColorBrush x:Key="BrushSoftBlue" Color="{StaticResource ColorSoftBlue}"/>
+        <SolidColorBrush x:Key="BrushWhite" Color="{StaticResource ColorWhite}"/>
+        <SolidColorBrush x:Key="BrushLightGray" Color="{StaticResource ColorLightGray}"/>
 
-        <SolidColorBrush x:Key="BrushYellow">#FFFFDB00</SolidColorBrush>
-        <SolidColorBrush x:Key="BrushDarkYellow">#FFAF8B00</SolidColorBrush>
 
         <Storyboard x:Key="FadeIn">
             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
@@ -99,47 +102,53 @@
         <Border HorizontalAlignment="Stretch"
                 Margin="5,5,5,5"
                 BorderThickness="1,1,1,1"
-                BorderBrush="{StaticResource BrushDarkYellow}">
-            <Border.Effect>
-                <DropShadowEffect Color="#FF747474" />
-            </Border.Effect>
+                BorderBrush="{StaticResource BrushLightGray}">
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1"
-                                     StartPoint="0.5,0">
-                    <GradientStop Color="{StaticResource ColorDarkBlue}"
-                                  Offset="0" />
-                    <GradientStop Color="{StaticResource ColorLightBlue}"
-                                  Offset="1" />
-                </LinearGradientBrush>
+                <SolidColorBrush Color="{StaticResource ColorDarkGray}"/>
             </Border.Background>
         </Border>
-        <Image HorizontalAlignment="Left"
-               Margin="10,10,10,10"
-               Width="50"
-               Source="/Images/bulb-green.png"
-               Stretch="Fill"
-               Height="100"
-               VerticalAlignment="Top"
-               Visibility="{Binding ElementName=Me,Path=VisibilityBulbGreen, Mode=OneWay}" />
-        <Image HorizontalAlignment="Left"
-               Margin="10,10,10,10"
-               Width="50"
-               Source="/Images/bulb-yellow.png"
-               Stretch="Fill"
-               Height="100"
-               VerticalAlignment="Top"
-               Visibility="{Binding ElementName=Me,Path=VisibilityBulbYellow, Mode=OneWay}" />
-        <Image HorizontalAlignment="Left"
-               Margin="10,10,10,10"
-               Width="50"
-               Source="/Images/bulb-red.png"
-               Stretch="Fill"
-               Height="100"
-               VerticalAlignment="Top"
-               Visibility="{Binding ElementName=Me,Path=VisibilityBulbRed, Mode=OneWay}" />
+        <!-- Green Status -->
+        <Ellipse Width="50"
+             Height="50"
+             Fill="Green"
+             HorizontalAlignment="Left"
+             VerticalAlignment="Top"
+             Margin="10,35,0,0"
+             Visibility="{Binding ElementName=Me,Path=VisibilityBulbGreen, Mode=OneWay}" />
+
+        <!-- Yellow Status with Exclamation Point -->
+        <Grid Width="50"
+          Height="50"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top"
+          Margin="10,35,0,0">
+            <Ellipse Fill="Yellow" />
+            <TextBlock Text="!"
+                   FontSize="30"
+                   Foreground="Black"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold" />
+        </Grid>
+
+        <!-- Red Status with a Cross -->
+        <Grid Width="50"
+          Height="50"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top"
+          Margin="10,35,0,0">
+            <Ellipse Fill="Red" />
+            <TextBlock Text="X"
+                   FontSize="30"
+                   Foreground="White"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold" />
+        </Grid>
+
         <TextBlock Margin="72,49.2,10,0"
                    VerticalAlignment="Top"
-                   Foreground="{StaticResource BrushYellow}"
+                   Foreground="{StaticResource BrushWhite}"
                    TextWrapping="Wrap"
                    FontFamily="Verdana"
                    Text="{Binding Path=BalloonText, ElementName=Me, Mode=Default}" />
@@ -149,35 +158,30 @@
               VerticalAlignment="Top"
               Height="1"
               Data="M26,107 L220.04123,107"
-              SnapsToDevicePixels="True">
-            <Path.Stroke>
-                <LinearGradientBrush EndPoint="0.973,0.5"
-                                     StartPoint="0.005,0.5">
-                    <GradientStop Color="#00ECAD25"
-                                  Offset="1" />
-                    <GradientStop Color="{StaticResource ColorDarkYellow}"
-                                  Offset="0" />
-                </LinearGradientBrush>
-            </Path.Stroke>
+              Stroke="{StaticResource BrushLightGray}">
         </Path>
         <TextBlock Margin="72,10,10,0"
                    VerticalAlignment="Top"
                    Height="23.2"
                    TextWrapping="Wrap"
-                   Foreground="{StaticResource BrushYellow}"
+                   Foreground="{StaticResource BrushWhite}"
                    FontWeight="Bold"
                    FontFamily="Verdana"
                    Text="{Binding Path=BalloonTitle, ElementName=Me, Mode=Default}" />
-        <Image HorizontalAlignment="Right"
-               Margin="0,10,10,0"
-               VerticalAlignment="Top"
-               Width="16"
-               Height="16"
-               Source="/Images/close-window-xxl.png"
-               Stretch="Fill"
-               Opacity="0.4"
-               ToolTip="Close Balloon"
-               x:Name="ImageClose"
-               MouseDown="ImageClose_MouseDown" />
+        <!-- Close Button -->
+        <Path x:Name="ImageClose" 
+          Data="M1,1 L16,16 M16,1 L1,16" 
+          Stroke="White" 
+          StrokeThickness="2" 
+          HorizontalAlignment="Right" 
+          VerticalAlignment="Top" 
+          Width="16" 
+          Height="16" 
+          Margin="0,10,10,0" 
+          Opacity="0.4"
+          ToolTip="Close Balloon"
+          MouseDown="ImageClose_MouseDown"
+        />
+
     </Grid>
 </UserControl>

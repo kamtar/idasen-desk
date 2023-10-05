@@ -461,6 +461,9 @@ namespace Idasen.SystemTray
         {
             try
             {
+                _manager.Save();
+                _periodicTimer?.Stop();
+
                 _logger.Debug ( $"[{_desk?.DeviceName}] Trying to disconnect from Idasen Desk..." ) ;
 
                 DisposeDesk ( ) ;
@@ -493,6 +496,8 @@ namespace Idasen.SystemTray
         {
             _logger.Debug ( $"[{_desk?.Name}] Disposing desk" ) ;
 
+            _periodicTimer?.Stop();
+            _periodicTimer?.Dispose();
             _finished?.Dispose ( ) ;
             _desk?.Dispose ( ) ;
             _deskProvider?.Dispose ( ) ;
@@ -524,6 +529,10 @@ namespace Idasen.SystemTray
 
             _logger.Debug ( $"[{_desk?.DeviceName}] Connected successful" ) ;
 
+            _periodicTimer = new System.Timers.Timer(60000);
+            _periodicTimer.Elapsed += StatsHandler;
+            _periodicTimer.Start();
+
             if ( ! _manager.CurrentSettings.DeviceLocked )
                 return ;
 
@@ -536,6 +545,7 @@ namespace Idasen.SystemTray
         {
             _logger.Debug ( $"Height = {height}" ) ;
 
+            _currentHeightInMillimeters = height;
             var heightInCm = Math.Round ( height / 100.0 ) ;
 
             ShowFancyBalloon ( "Finished" ,
@@ -674,11 +684,57 @@ namespace Idasen.SystemTray
                 _logger.Error(exception, "Failed to handle global hot key command for 'Seating'.");
             }
         }
+        
+        private void ResetDailyStats()
+        {
+            _manager.CurrentSettings.DailyStandingHours = 0;
+            _manager.CurrentSettings.DailySittingHours = 0;
+        }
 
+        private void ResetWeeklyStats()
+        {
+            _manager.CurrentSettings.WeeklyStandingHours = 0;
+            _manager.CurrentSettings.WeeklySittingHours = 0;
+        }
+
+        private void StatsHandler(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (DeskIsStanding())
+            {
+                _manager.CurrentSettings.DailyStandingHours += 1.0 / 60;
+                _manager.CurrentSettings.WeeklyStandingHours += 1.0 / 60;
+            }
+            else
+            {
+                _manager.CurrentSettings.DailySittingHours += 1.0 / 60;
+                _manager.CurrentSettings.WeeklySittingHours += 1.0 / 60;
+            }
+
+            if (DateTime.Now.TimeOfDay < TimeSpan.FromMinutes(1))
+            {
+                ResetDailyStats();
+            }
+
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday && DateTime.Now.TimeOfDay < TimeSpan.FromMinutes(1))
+            {
+                ResetWeeklyStats();
+            }
+
+            if (DateTime.Now.Minute % 10 == 0)
+            {
+                _manager.Save(); 
+            }
+        }
+
+        private bool DeskIsStanding()
+        {
+            return _currentHeightInMillimeters > 9500; // 95cm converted to millimeters
+        }
 
         private readonly IErrorManager    _errorManager ;
         private readonly IScheduler _scheduler = Scheduler.CurrentThread ;
-
+        private System.Timers.Timer _periodicTimer;
+ 
         [ CanBeNull ] private      IDesk                   _desk ;
         private                    IDisposable             _finished ;
         private                    ILogger                 _logger ;
@@ -691,5 +747,6 @@ namespace Idasen.SystemTray
         private                    Func < IDeskProvider >  _providerFactory ;
         private                    CancellationToken       _token ;
         private                    CancellationTokenSource _tokenSource ;
+        private uint _currentHeightInMillimeters;
     }
 }

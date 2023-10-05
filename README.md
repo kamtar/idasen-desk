@@ -1,3 +1,8 @@
+# About this fork
+- different UI colours (simplified dark theme look) 
+- Added statistics tab into settings showing Daily and Weekly sitting and standing times with a pie graph
+- Work in progress
+
 # Latest Changes
 - Added support for Windows 11
 - Updated to .Net 6.0

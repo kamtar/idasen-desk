@@ -1,11 +1,15 @@
 ﻿using System ;
 using System.Threading.Tasks ;
+using System.Windows.Controls;
 using System.Windows.Input ;
 using Idasen.BluetoothLE.Core ;
 using Idasen.SystemTray.Interfaces ;
 using Idasen.SystemTray.Utils ;
 using JetBrains.Annotations ;
+using LiveCharts;
 using Serilog ;
+using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Idasen.SystemTray
 {
@@ -32,6 +36,8 @@ namespace Idasen.SystemTray
 
             InitializeComponent ( ) ;
 
+            DailyPieChart.ToolTip = null;
+            WeeklyPieChart.ToolTip = null;
             LabelVersion.Content = provider.GetVersion ( ) ;
 
             Task.Run ( Initialize ) ;
@@ -164,6 +170,47 @@ namespace Idasen.SystemTray
             DeskAddress.Text        = _addressConverter.EmptyIfDefault ( settings.DeviceAddress ) ;
             Locked.IsChecked        = settings.DeviceLocked ;
             Notifications.IsChecked = settings.NotificationsEnabled ;
+
+            UpdatePieChart(DailyPieChart, DailyStanding, settings.DailyStandingHours, DailySitting, settings.DailySittingHours);
+            UpdatePieChart(WeeklyPieChart, WeeklyStanding, settings.WeeklyStandingHours, WeeklySitting, settings.WeeklySittingHours);
+            UpdateLabelCharts(txDailyStanding, txDailySitting, settings.DailyStandingHours, settings.DailySittingHours);
+            UpdateLabelCharts(txWeeklyStanding, txWeeklySitting, settings.WeeklyStandingHours, settings.WeeklySittingHours);
+        }
+
+        private void UpdatePieChart(LiveCharts.Wpf.PieChart pieChart, LiveCharts.Wpf.PieSeries standingSeries, double standingHours, LiveCharts.Wpf.PieSeries sittingSeries, double sittingHours)
+        {
+         
+
+            if (standingHours == 0 && sittingHours == 0)
+            {
+                standingSeries.Values = new ChartValues<double> { 0.5 };
+                sittingSeries.Values = new ChartValues<double> { 0.5 };
+            }
+            else
+            {
+                standingSeries.Values = new ChartValues<double> { standingHours };
+                sittingSeries.Values = new ChartValues<double> { sittingHours };
+            }
+        }
+
+        private void UpdateLabelCharts(TextBlock standing, TextBlock sitting, double standingHours, double sittingHours)
+        {
+            standing.Text = FormatTime(standingHours);
+            sitting.Text = FormatTime(sittingHours);
+        }
+
+        private string FormatTime(double hours)
+        {
+            if (hours < 1.0)
+            {
+                // Convert hours to minutes
+                int minutes = (int)(hours * 60);
+                return $"{minutes} minutes";
+            }
+            else
+            {
+                return $"{hours.ToString("F2")} hours";
+            }
         }
 
         private readonly IDoubleToUIntConverter         _doubleConverter  = new DoubleToUIntConverter ( ) ;

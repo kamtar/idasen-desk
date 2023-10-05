@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="150"
@@ -18,9 +19,29 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/SettingsWindowResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <!-- Additional Styles -->
+            <Style TargetType="TabItem">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Background" Value="#333"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Foreground" Value="#555"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="#333"/>
+                <Setter Property="BorderBrush" Value="#555"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Style="{StaticResource GridGradientBlue}">
+    <Grid Background="#1F1F1F">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -29,23 +50,24 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!-- Row 0 -->
+        <!-- Redesigning the close button for better visibility on dark theme -->
         <DockPanel Grid.Row="0"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
                    LastChildFill="True">
-            <Image DockPanel.Dock="Right"
-                   HorizontalAlignment="Right"
-                   Margin="0,4,4,0"
-                   VerticalAlignment="Top"
-                   Width="24"
-                   Height="24"
-                   Source="/Images/close-window-xxl.png"
-                   Stretch="Fill"
-                   Opacity="0.4"
-                   ToolTip="Close Settings"
-                   x:Name="ImageClose"
-                   MouseDown="ImageClose_MouseDown" />
+            <Path DockPanel.Dock="Right"
+                  HorizontalAlignment="Right"
+                  Margin="8"
+                  VerticalAlignment="Top"
+                  Width="16"
+                  Height="16"
+                  Data="M1,1 L16,16 M16,1 L1,16"
+                  Stroke="White"
+                  StrokeThickness="1.5"
+                  Opacity="0.7"
+                  ToolTip="Close Settings"
+                  x:Name="ImageClose"
+                  MouseDown="ImageClose_MouseDown"/>
             <Label DockPanel.Dock="Right"
                    Style="{StaticResource LabelVersion}"
                    Content="V0.0.0.0"
@@ -60,9 +82,60 @@
         <TabControl Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2">
-            <TabItem Header="General"
+            <TabItem Header="Statistics">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Headers -->
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Daily" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Weekly" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+
+                    <!-- Labels on the Left -->
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Top" Margin="5,5,0,0">
+                        <TextBlock Text="Standing:" Foreground="White"/>
+                        <TextBlock Text="Sitting:" Foreground="White"/>
+                    </StackPanel>
+
+                    <!-- Daily Pie Chart and Stats -->
+                    <lvc:PieChart Grid.Row="1" Grid.Column="1" Name="DailyPieChart">
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Name="DailyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" />
+                            <lvc:PieSeries Name="DailySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" />
+                        </lvc:PieChart.Series>
+                    </lvc:PieChart>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
+                        <TextBlock Name="txDailyStanding" Text="10 hours" Foreground="White"/>
+                        <TextBlock Name="txDailySitting" Text="20 hours" Foreground="White"/>
+                    </StackPanel>
+
+                    <!-- Weekly Pie Chart and Stats -->
+                    <lvc:PieChart Grid.Row="1" Grid.Column="2" Name="WeeklyPieChart">
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Name="WeeklyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" />
+                            <lvc:PieSeries Name="WeeklySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" />
+                        </lvc:PieChart.Series>
+                    </lvc:PieChart>
+                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
+                        <TextBlock Name="txWeeklyStanding" Text="10 min" Foreground="White"/>
+                        <TextBlock Name="txWeeklySitting" Text="20 min" Foreground="White"/>
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="Presets"
                      IsSelected="True">
-                <Grid Style="{StaticResource GridGradientBlue}">
+                <Grid Background="#1F1F1F">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -118,7 +191,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced">
-                <Grid Style="{StaticResource GridGradientBlue}">
+                <Grid Background="#1F1F1F">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
