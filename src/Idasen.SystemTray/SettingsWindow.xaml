@@ -82,7 +82,7 @@
         <TabControl Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2">
-            <TabItem Header="Statistics">
+            <TabItem Header="Statistics" IsSelected="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -109,8 +109,8 @@
                     <!-- Daily Pie Chart and Stats -->
                     <lvc:PieChart Grid.Row="1" Grid.Column="1" Name="DailyPieChart">
                         <lvc:PieChart.Series>
-                            <lvc:PieSeries Name="DailyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" />
-                            <lvc:PieSeries Name="DailySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" />
+                            <lvc:PieSeries Name="DailyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" LabelPoint="{x:Null}"/>
+                            <lvc:PieSeries Name="DailySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" LabelPoint="{x:Null}" />
                         </lvc:PieChart.Series>
                     </lvc:PieChart>
                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
@@ -121,8 +121,8 @@
                     <!-- Weekly Pie Chart and Stats -->
                     <lvc:PieChart Grid.Row="1" Grid.Column="2" Name="WeeklyPieChart">
                         <lvc:PieChart.Series>
-                            <lvc:PieSeries Name="WeeklyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" />
-                            <lvc:PieSeries Name="WeeklySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" />
+                            <lvc:PieSeries Name="WeeklyStanding" Title="Standing" Values="10" Fill="#8884d8" StrokeThickness="0" LabelPoint="{x:Null}"/>
+                            <lvc:PieSeries Name="WeeklySitting" Title="Sitting" Values="20" Fill="#84c4d8" StrokeThickness="0" LabelPoint="{x:Null}"/>
                         </lvc:PieChart.Series>
                     </lvc:PieChart>
                     <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0">
@@ -133,8 +133,7 @@
 
             </TabItem>
 
-            <TabItem Header="Presets"
-                     IsSelected="True">
+            <TabItem Header="Presets">
                 <Grid Background="#1F1F1F">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
