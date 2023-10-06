@@ -33,9 +33,9 @@
         uint DeskMaxHeightInCm    { get ; set ; }
         bool NotificationsEnabled { get ; set ; }
 
-        double DailyStandingHours { get; set; }
-        double DailySittingHours { get; set; }
-        double WeeklyStandingHours { get; set; }
-        double WeeklySittingHours { get; set; }
+        ulong DailyStandingMinutes { get; set; }
+        ulong DailySittingMinutes { get; set; }
+        ulong WeeklyStandingMinutes { get; set; }
+        ulong WeeklySittingMinutes { get; set; }
     }
 }

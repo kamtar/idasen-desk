@@ -9,6 +9,7 @@ using Idasen.BluetoothLE.Linak.Interfaces ;
 using Idasen.SystemTray.Interfaces ;
 using JetBrains.Annotations ;
 using Serilog ;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Idasen.SystemTray
 {
@@ -37,6 +38,10 @@ namespace Idasen.SystemTray
 
         public TaskbarIcon NotifyIcon { get ; }
 
+        public uint DeskHeight()
+        {
+            return _heightInCm;
+        }
 
         public void Dispose ( )
         {
@@ -59,6 +64,8 @@ namespace Idasen.SystemTray
         private void OnHeightAndSpeedChanged ( HeightSpeedDetails details )
         {
             var heightInCm = Convert.ToInt32 ( Math.Round ( details.Height / 100.0 ) ) ;
+            
+            _heightInCm = (uint)heightInCm;
 
             _creator.Update ( NotifyIcon, heightInCm ) ;
 
@@ -68,7 +75,7 @@ namespace Idasen.SystemTray
         private readonly IDynamicIconCreator _creator ;
         private readonly ILogger             _logger ;
         private readonly IScheduler          _scheduler ;
-
+        private uint _heightInCm;
         private IDisposable _disposable ;
     }
 }

@@ -545,7 +545,7 @@ namespace Idasen.SystemTray
         {
             _logger.Debug ( $"Height = {height}" ) ;
 
-            _currentHeightInMillimeters = height;
+            
             var heightInCm = Math.Round ( height / 100.0 ) ;
 
             ShowFancyBalloon ( "Finished" ,
@@ -687,27 +687,27 @@ namespace Idasen.SystemTray
         
         private void ResetDailyStats()
         {
-            _manager.CurrentSettings.DailyStandingHours = 0;
-            _manager.CurrentSettings.DailySittingHours = 0;
+            _manager.CurrentSettings.DailyStandingMinutes = 0;
+            _manager.CurrentSettings.DailySittingMinutes = 0;
         }
 
         private void ResetWeeklyStats()
         {
-            _manager.CurrentSettings.WeeklyStandingHours = 0;
-            _manager.CurrentSettings.WeeklySittingHours = 0;
+            _manager.CurrentSettings.WeeklyStandingMinutes = 0;
+            _manager.CurrentSettings.WeeklySittingMinutes = 0;
         }
 
         private void StatsHandler(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (DeskIsStanding())
             {
-                _manager.CurrentSettings.DailyStandingHours += 1.0 / 60;
-                _manager.CurrentSettings.WeeklyStandingHours += 1.0 / 60;
+                _manager.CurrentSettings.DailyStandingMinutes += 1;
+                _manager.CurrentSettings.WeeklyStandingMinutes += 1;
             }
             else
             {
-                _manager.CurrentSettings.DailySittingHours += 1.0 / 60;
-                _manager.CurrentSettings.WeeklySittingHours += 1.0 / 60;
+                _manager.CurrentSettings.DailySittingMinutes += 1;
+                _manager.CurrentSettings.WeeklySittingMinutes += 1;
             }
 
             if (DateTime.Now.TimeOfDay < TimeSpan.FromMinutes(1))
@@ -728,7 +728,7 @@ namespace Idasen.SystemTray
 
         private bool DeskIsStanding()
         {
-            return _currentHeightInMillimeters > 9500; // 95cm converted to millimeters
+            return _iconProvider.DeskHeight() > 95;
         }
 
         private readonly IErrorManager    _errorManager ;
@@ -747,6 +747,6 @@ namespace Idasen.SystemTray
         private                    Func < IDeskProvider >  _providerFactory ;
         private                    CancellationToken       _token ;
         private                    CancellationTokenSource _tokenSource ;
-        private uint _currentHeightInMillimeters;
+
     }
 }

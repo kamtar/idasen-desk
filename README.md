@@ -2,8 +2,6 @@
 - different UI colours (simplified dark theme look) 
 - Added statistics tab into settings showing Daily and Weekly sitting and standing times with a pie graph
 ![new_ui](https://github.com/kamtar/idasen-desk/blob/main/docs/images/example_new_ui.jpg)
-- TODO: Fix icons in notifications (Error notification for non-error messages)
-- TODO: Close X button hard to click
 - TODO: Add thredshold for standing/sitting stats. into settings 
 
 # Latest Changes

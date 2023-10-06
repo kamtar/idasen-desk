@@ -14,10 +14,10 @@ namespace Idasen.SystemTray.Settings
         public uint   DeviceMonitoringTimeout { get ; set ; } = Constants.DefaultDeviceMonitoringTimeout ;
         public bool   DeviceLocked            { get ; set ; } = Constants.DefaultLocked ;
         public bool   NotificationsEnabled    { get ; set ; } = Constants.NotificationsEnabled;
-        public double DailyStandingHours { get; set; }
-        public double DailySittingHours { get; set; }
-        public double WeeklyStandingHours { get; set; }
-        public double WeeklySittingHours { get; set; }
+        public ulong DailyStandingMinutes { get; set; }
+        public ulong DailySittingMinutes { get; set; }
+        public ulong WeeklyStandingMinutes { get; set; }
+        public ulong WeeklySittingMinutes { get; set; }
 
         public override string ToString ( )
         {
@@ -27,10 +27,10 @@ namespace Idasen.SystemTray.Settings
                    $"{nameof ( DeviceAddress )} = {DeviceAddress}, "                     +
                    $"{nameof ( DeviceMonitoringTimeout )} = {DeviceMonitoringTimeout}, " +
                    $"{nameof(DeviceLocked)} = {DeviceLocked}" +
-                   $"{nameof(DailyStandingHours)} = {DailyStandingHours}, " +
-                   $"{nameof(DailySittingHours)} = {DailySittingHours}, " +
-                   $"{nameof(WeeklyStandingHours)} = {WeeklyStandingHours}, " +
-                   $"{nameof(WeeklySittingHours)} = {WeeklySittingHours}, ";
+                   $"{nameof(DailyStandingMinutes)} = {DailyStandingMinutes}, " +
+                   $"{nameof(DailySittingMinutes)} = {DailySittingMinutes}, " +
+                   $"{nameof(WeeklyStandingMinutes)} = {WeeklyStandingMinutes}, " +
+                   $"{nameof(WeeklySittingMinutes)} = {WeeklySittingMinutes}, ";
         }
     }
 }

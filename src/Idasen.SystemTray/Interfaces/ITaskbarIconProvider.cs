@@ -8,5 +8,6 @@ namespace Idasen.SystemTray.Interfaces
     {
         TaskbarIcon NotifyIcon { get ; }
         void        Initialize ( IDesk desk ) ;
+        uint        DeskHeight();
     }
 }

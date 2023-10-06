@@ -175,44 +175,41 @@ namespace Idasen.SystemTray
             Locked.IsChecked        = settings.DeviceLocked ;
             Notifications.IsChecked = settings.NotificationsEnabled ;
 
-            UpdatePieChart(DailyPieChart, DailyStanding, settings.DailyStandingHours, DailySitting, settings.DailySittingHours);
-            UpdatePieChart(WeeklyPieChart, WeeklyStanding, settings.WeeklyStandingHours, WeeklySitting, settings.WeeklySittingHours);
-            UpdateLabelCharts(txDailyStanding, txDailySitting, settings.DailyStandingHours, settings.DailySittingHours);
-            UpdateLabelCharts(txWeeklyStanding, txWeeklySitting, settings.WeeklyStandingHours, settings.WeeklySittingHours);
+            UpdatePieChart(DailyPieChart, DailyStanding, settings.DailyStandingMinutes, DailySitting, settings.DailySittingMinutes);
+            UpdatePieChart(WeeklyPieChart, WeeklyStanding, settings.WeeklyStandingMinutes, WeeklySitting, settings.WeeklySittingMinutes);
+            UpdateLabelCharts(txDailyStanding, txDailySitting, settings.DailyStandingMinutes, settings.DailySittingMinutes);
+            UpdateLabelCharts(txWeeklyStanding, txWeeklySitting, settings.WeeklyStandingMinutes, settings.WeeklySittingMinutes);
         }
 
-        private void UpdatePieChart(LiveCharts.Wpf.PieChart pieChart, LiveCharts.Wpf.PieSeries standingSeries, double standingHours, LiveCharts.Wpf.PieSeries sittingSeries, double sittingHours)
+        private void UpdatePieChart(LiveCharts.Wpf.PieChart pieChart, LiveCharts.Wpf.PieSeries standingSeries, ulong standingMinutes, LiveCharts.Wpf.PieSeries sittingSeries, ulong sittingMinutes)
         {
-         
-
-            if (standingHours == 0 && sittingHours == 0)
+            if (standingMinutes == 0 && sittingMinutes == 0)
             {
                 standingSeries.Values = new ChartValues<double> { 0.5 };
                 sittingSeries.Values = new ChartValues<double> { 0.5 };
             }
             else
             {
-                standingSeries.Values = new ChartValues<double> { standingHours };
-                sittingSeries.Values = new ChartValues<double> { sittingHours };
+                standingSeries.Values = new ChartValues<double> { standingMinutes };
+                sittingSeries.Values = new ChartValues<double> { sittingMinutes };
             }
         }
 
-        private void UpdateLabelCharts(TextBlock standing, TextBlock sitting, double standingHours, double sittingHours)
+        private void UpdateLabelCharts(TextBlock standing, TextBlock sitting, ulong standingMinutes, ulong sittingMinutes)
         {
-            standing.Text = FormatTime(standingHours);
-            sitting.Text = FormatTime(sittingHours);
+            standing.Text = FormatTime(standingMinutes);
+            sitting.Text = FormatTime(sittingMinutes);
         }
 
-        private string FormatTime(double hours)
+        private string FormatTime(ulong minutes)
         {
-            if (hours < 1.0)
+            if (minutes < 60)
             {
-                // Convert hours to minutes
-                int minutes = (int)(hours * 60);
                 return $"{minutes} minutes";
             }
             else
             {
+                double hours = minutes / 60.0;
                 return $"{hours.ToString("F2")} hours";
             }
         }
