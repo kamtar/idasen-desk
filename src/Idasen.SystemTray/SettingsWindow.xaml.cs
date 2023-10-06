@@ -35,9 +35,13 @@ namespace Idasen.SystemTray
             _manager = manager ;
 
             InitializeComponent ( ) ;
+            
+            DailyPieChart.DataTooltip = null;
+            DailyPieChart.Hoverable = false;
+            
+            WeeklyPieChart.DataTooltip = null;
+            WeeklyPieChart.Hoverable = false;
 
-            DailyPieChart.ToolTip = null;
-            WeeklyPieChart.ToolTip = null;
             LabelVersion.Content = provider.GetVersion ( ) ;
 
             Task.Run ( Initialize ) ;
