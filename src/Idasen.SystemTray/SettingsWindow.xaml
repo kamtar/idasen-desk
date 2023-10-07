@@ -102,6 +102,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <TextBlock Grid.Row="1" Grid.Column="0" Name="CurrentTime" Text="Current position for {0}"  Width="80"
+                                TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" Foreground="White" FontSize="10" />
                     <!-- Headers -->
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Daily" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>
                     <TextBlock Grid.Row="0" Grid.Column="2" Text="Weekly" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"/>

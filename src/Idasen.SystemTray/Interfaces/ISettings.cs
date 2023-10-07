@@ -1,4 +1,6 @@
-﻿namespace Idasen.SystemTray.Interfaces
+﻿using System;
+
+namespace Idasen.SystemTray.Interfaces
 {
     public interface ISettings
     {
@@ -37,5 +39,7 @@
         ulong DailySittingMinutes { get; set; }
         ulong WeeklyStandingMinutes { get; set; }
         ulong WeeklySittingMinutes { get; set; }
+        ulong CurrentPosMinutes { get; set; }
+        DateTime LastTime { get; set; }
     }
 }

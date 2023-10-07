@@ -699,15 +699,27 @@ namespace Idasen.SystemTray
 
         private void StatsHandler(object sender, System.Timers.ElapsedEventArgs e)
         {
+            _manager.CurrentSettings.CurrentPosMinutes += 1;
+
             if (DeskIsStanding())
             {
                 _manager.CurrentSettings.DailyStandingMinutes += 1;
                 _manager.CurrentSettings.WeeklyStandingMinutes += 1;
+                _notificationTries = 0;
+
+                if (_lastPosSitting)
+                    _manager.CurrentSettings.CurrentPosMinutes = 0;
+                _lastPosSitting = false;
             }
             else
             {
                 _manager.CurrentSettings.DailySittingMinutes += 1;
                 _manager.CurrentSettings.WeeklySittingMinutes += 1;
+                
+                if (!_lastPosSitting)
+                    _manager.CurrentSettings.CurrentPosMinutes = 0;
+
+                _lastPosSitting = true;
             }
 
             if (DateTime.Now.TimeOfDay < TimeSpan.FromMinutes(1))
@@ -720,21 +732,36 @@ namespace Idasen.SystemTray
                 ResetWeeklyStats();
             }
 
-            if (DateTime.Now.Minute % 10 == 0)
+            if (_currentPosTime >= 180 && !DeskIsStanding()) 
             {
-                _manager.Save(); 
+                if((_currentPosTime % 10) == 0 && _notificationTries < 3)
+                {
+                    _notificationTries++;
+                    OnLongSitting();
+                }
+                   
             }
+
+                _manager.Save(); 
         }
 
         private bool DeskIsStanding()
         {
-            return _iconProvider.DeskHeight() > 95;
+            return _iconProvider.DeskHeight() > 90;
+        }
+
+        private void OnLongSitting()
+        {
+            ShowFancyBalloon("Attention", $"Maybe its time to stand?", Visibility.Hidden, Visibility.Visible);
         }
 
         private readonly IErrorManager    _errorManager ;
         private readonly IScheduler _scheduler = Scheduler.CurrentThread ;
         private System.Timers.Timer _periodicTimer;
- 
+        private ulong _currentPosTime = 0;
+        private byte _notificationTries = 0;
+        private bool _lastPosSitting = false;
+
         [ CanBeNull ] private      IDesk                   _desk ;
         private                    IDisposable             _finished ;
         private                    ILogger                 _logger ;

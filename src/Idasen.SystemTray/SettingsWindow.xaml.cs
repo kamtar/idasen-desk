@@ -174,11 +174,12 @@ namespace Idasen.SystemTray
             DeskAddress.Text        = _addressConverter.EmptyIfDefault ( settings.DeviceAddress ) ;
             Locked.IsChecked        = settings.DeviceLocked ;
             Notifications.IsChecked = settings.NotificationsEnabled ;
-
+            
             UpdatePieChart(DailyPieChart, DailyStanding, settings.DailyStandingMinutes, DailySitting, settings.DailySittingMinutes);
             UpdatePieChart(WeeklyPieChart, WeeklyStanding, settings.WeeklyStandingMinutes, WeeklySitting, settings.WeeklySittingMinutes);
             UpdateLabelCharts(txDailyStanding, txDailySitting, settings.DailyStandingMinutes, settings.DailySittingMinutes);
             UpdateLabelCharts(txWeeklyStanding, txWeeklySitting, settings.WeeklyStandingMinutes, settings.WeeklySittingMinutes);
+            CurrentTime.Text = string.Format(CurrentTime.Text, FormatTime(_manager.CurrentSettings.CurrentPosMinutes));
         }
 
         private void UpdatePieChart(LiveCharts.Wpf.PieChart pieChart, LiveCharts.Wpf.PieSeries standingSeries, ulong standingMinutes, LiveCharts.Wpf.PieSeries sittingSeries, ulong sittingMinutes)

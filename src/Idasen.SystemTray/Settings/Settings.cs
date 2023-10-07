@@ -1,5 +1,6 @@
 ﻿using Idasen.SystemTray.Interfaces ;
 using Idasen.SystemTray.Utils ;
+using System;
 
 namespace Idasen.SystemTray.Settings
 {
@@ -18,6 +19,8 @@ namespace Idasen.SystemTray.Settings
         public ulong DailySittingMinutes { get; set; }
         public ulong WeeklyStandingMinutes { get; set; }
         public ulong WeeklySittingMinutes { get; set; }
+        public ulong CurrentPosMinutes { get; set; }
+        public DateTime LastTime { get; set; }
 
         public override string ToString ( )
         {
@@ -30,7 +33,9 @@ namespace Idasen.SystemTray.Settings
                    $"{nameof(DailyStandingMinutes)} = {DailyStandingMinutes}, " +
                    $"{nameof(DailySittingMinutes)} = {DailySittingMinutes}, " +
                    $"{nameof(WeeklyStandingMinutes)} = {WeeklyStandingMinutes}, " +
-                   $"{nameof(WeeklySittingMinutes)} = {WeeklySittingMinutes}, ";
+                   $"{nameof(WeeklySittingMinutes)} = {WeeklySittingMinutes}, "+
+                   $"{nameof(CurrentPosMinutes)} = {CurrentPosMinutes}, " +
+                   $"{nameof(LastTime)} = {LastTime}, ";
         }
     }
 }
