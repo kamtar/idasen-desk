@@ -1,8 +1,11 @@
 # About this fork
 - different UI colours (simplified dark theme look) 
 - Added statistics tab into settings showing Daily and Weekly sitting and standing times with a pie graph
+- Added counting of time spent in current position
 ![new_ui](https://github.com/kamtar/idasen-desk/blob/main/docs/images/example_new_ui.jpg)
 - TODO: Add thredshold for standing/sitting stats. into settings 
+- TODO: Fix stats not reseting unless app is running at midnight
+- TODO: Finish Setting tab for Sitting too long reminders
 
 # Latest Changes
 - Added support for Windows 11
